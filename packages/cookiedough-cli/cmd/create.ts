@@ -1,19 +1,19 @@
+/**
+ * @module Create
+ *
+ * This file contains the handlers for the `create` command in the cookiedough cli,
+ * and is responsible for parsing the information locally and
+ * externally to build a user's project the way they want.
+ */
 import {
 	CookieProcessRecipe,
 	CrumbOptions,
 	FlavorCrumbSchema,
 	ENV_RAW_SOURCE,
-	FlavorDoughMap
+	FlavorDoughMap,
 } from '@cookiedough/types';
-import {
-	retrieveExtern,
-	log,
-	useSysInfo
-} from '@cookiedough/internal';
-import {
-	prompt,
-	FlavorInquiry,
-} from './handle';
+import { retrieveExtern, log, useSysInfo } from '@cookiedough/internal';
+import { prompt, FlavorInquiry } from './handle';
 
 /**
  *

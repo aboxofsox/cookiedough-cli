@@ -1,16 +1,14 @@
+/**
+ * @module Handle
+ *
+ * This file contains the handlers mapped to the callbacks that put together the CLI itself at parsetime.
+ */
 import { useCreate } from './create';
-import {
-	CookieProcessRecipe,
-	ENV_INLINE_ARGS
-} from '@cookiedough/types';
-import {
-	log,
-	useDefaultConfig,
-	useGlobalConfigWithCWD
-} from '@cookiedough/internal';
+import { CookieProcessRecipe, ENV_INLINE_ARGS } from '@cookiedough/types';
+import { log, useConfig, useDefaultConfig } from '@cookiedough/internal';
 export { Inquirer, prompt } from 'inquirer';
 import { ListQuestion } from 'inquirer';
-import { useManPage } from '@cookiedough/internal'
+import { useManPage } from '@cookiedough/internal';
 import { CookieCMD } from '@cookiedough/types';
 
 /**
@@ -46,6 +44,9 @@ export const CMDList: CookieCMD<any>[] = [
  * @returns recipe for the called process context
  */
 export async function useCMDRecipe(): Promise<CookieProcessRecipe> {
+	/**
+	 * get the command from the argv array and filter it thru the valid options
+	 */
 	const inline = process.argv.slice(2);
 	const args = ENV_INLINE_ARGS.filter(
 		(arg) => inline.includes(arg.long) || inline.includes(arg.short)
@@ -62,7 +63,10 @@ export async function useCMDRecipe(): Promise<CookieProcessRecipe> {
 		process.exit(1);
 	}
 
-	const default_config = await useDefaultConfig();
+	const crumbs = await useConfig(process.cwd());
+	/**
+	 * no inline args to parse
+	 */
 	if (inline.length === 0 || args.length > inline.length) {
 		return {
 			__args: null,
@@ -70,14 +74,16 @@ export async function useCMDRecipe(): Promise<CookieProcessRecipe> {
 				signature: 'create',
 				callback: useCreate,
 			},
-			crumbs: default_config,
+			crumbs,
 		};
 	}
+	/**
+	 * parse args if submitted
+	 */
 	const try_signature = inline[0];
 	const cmd = CMDList.filter(
 		(cmd) => cmd.signature === try_signature
 	).shift();
-	const crumbs = await useGlobalConfigWithCWD();
 
 	if (!cmd) {
 		const create_cmd = CMDList.filter((cmd) => cmd.signature === 'create');

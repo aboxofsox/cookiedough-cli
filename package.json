@@ -3,9 +3,12 @@
 	"private": true,
 	"scripts": {
 		"setup": "yarn",
-		"run:base": "npm run build --workspaces && npm run run:base --workspace=cookiedough-cli"
+		"run:base": "npm run build --workspaces && npm run run:base --workspace=cookiedough-cli",
+		"run:coretest": "node index.cjs"
 	},
 	"workspaces": [
-		"./packages/cookiedough-cli"
+		"./packages/cookiedough-cli",
+		"./packages/internal",
+		"./packages/cookiedough-types"
 	]
 }

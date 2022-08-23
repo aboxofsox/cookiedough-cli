@@ -1,6 +1,6 @@
 {
 	"name": "@cookiedough/types",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"private": false,
 	"main": "build/index.js",
 	"repository": "git@github.com:cookiedough-cli/cookiedough-cli.git",
@@ -9,6 +9,7 @@
 	"contributors": [],
 	"license": "MIT",
   	"scripts": {
+		"prebuild": "yarn lint",
 		"build": "tsc",
 		"test": "nyc mocha",
 		"lint": "prettier --write ./src",

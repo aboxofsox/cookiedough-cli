@@ -2,6 +2,12 @@ import { format } from 'util';
 import { LogFilePath, LogType, ValidLogData } from '@cookiedough/types';
 import { color } from 'terminal-color';
 
+/**
+ *
+ * @param val value to log as a string
+ * @param mode color tag to use
+ * @returns formatted string ready to be logged
+ */
 export function __log(val: string, mode?: string): string {
 	switch (mode) {
 		case 'yellow':
@@ -29,10 +35,26 @@ export function __log(val: string, mode?: string): string {
 			return format(color.reset('[cookiedough] %s'), val);
 	}
 }
-
+/**
+ *
+ * @param data data to log in warning form
+ * @returns nothing
+ */
 export const _warn = (data: ValidLogData) => console.warn(data);
+/**
+ *
+ * @param data data to log in error form
+ * @returns nothing
+ */
 export const _error = (data: ValidLogData) => console.error(data);
 
+/**
+ *
+ * @param data data to clean / log
+ * @param type type of log to process
+ * @param filePath file path of logfile to write event to if applicable
+ * @returns
+ */
 export function log(
 	data: ValidLogData,
 	type?: LogType,
@@ -44,9 +66,9 @@ export function log(
 	// todo - handle fs writer if needed
 	switch (type) {
 		case 'error':
-			return _error(__log(type, data));
+			return _error(__log(data, type));
 		case 'warning':
-			return _warn(__log(type, data));
+			return _warn(__log(data, type));
 		default:
 			return console.log(__log(data, type ?? 'info'));
 	}
